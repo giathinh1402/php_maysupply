@@ -1,0 +1,66 @@
+/* style for body*/
+
+@media only screen and (min-width: 600px) {
+body {
+  margin: 0px;
+  padding: 0px;
+  color: rgba(0, 0, 0, 0)
+}
+
+.container{
+    margin: 0%;
+    padding: 0%;
+}
+
+/* style for header*/
+header {
+  background-color: #666;
+  width: 100%;
+  height: auto;
+  margin-top: -3%;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* style for menu*/
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  /* Change the link color to #111 (black) on hover */
+  li a:hover {
+    background-color: #111;
+  }
+
+/* Style for footer */
+footer {
+  background-color: #777;
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+/* Style for content */
+article {
+    width: 100%;
+    background-color: #f1f1f1;
+    height: 300px; /* only for demonstration, should be removed */
+
+}

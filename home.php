@@ -1,22 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="style.css">
-    
-</head>
-
-<body>
     <div class="container">
         <?php include 'header.php';?>
-        <?php include 'content.php';?>
-        <?php include 'sidebar.php';?>
+        <?php include 'grid-8.php';?>
+        <?php include 'grid-4.php';?>
+        <?php include 'grid-3.php';?>
         <?php include 'footer.php';?>
+
     </div>
 
-</body>
-
-</html>
+    <script>
+// When the user scrolls down 80px from the top of the document, resize the navbar's padding and the logo's font size
+window.onscroll = function() {
+    scrollFunction()
+};
+    </script>

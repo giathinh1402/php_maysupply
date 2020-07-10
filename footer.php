@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Footer</title>
-</head>
-
-<body>
-    <div class="footer-widget-wrap">
+   <div class="footer-widget-wrap">
         <div class="footer-infor">
             <div class="website-title">
                 <div class="col-sm-10">
@@ -145,6 +135,3 @@
             </div>
         </div>
     </div>
-</body>
-
-</html>

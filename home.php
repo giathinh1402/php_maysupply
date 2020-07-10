@@ -3,7 +3,7 @@
         <?php include 'grid-8.php';?>
         <?php include 'grid-4.php';?>
         <?php include 'grid-3.php';?>
-        <?php include 'footer.php';?>
+        <?php include 'UI/footer.php';?>
 
     </div>
 

@@ -65,8 +65,8 @@
         <h2 class="section-title">Read More</h2>
     </div>
 
-    <section id="newsletter" class="page-section section_default section_default_layout_text" style="">
-        <div class="section-inner auto-height" style="">
+    <section id="newsletter" class="page-section section_default section_default_layout_text" >
+        <div class="section-inner auto-height" >
             <div class="section-content-wrapper">
                 <div class="section-content">
                     <h2 class="section-title">JOIN OUR E-NEWSLETTER</h2>

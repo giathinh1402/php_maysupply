@@ -1,15 +1,15 @@
-
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <div id="navbar">
         <div class="logo" href="#default" id="logo">
             <img src="img/may-supply.jpg">
         </div>
         <div id="navbar-right">
             <ul>
-                <li><a href="#" >Home</a></li>
+                <li><a href="home.php" >Home</a></li>
                 <li><a href="#">Products <i class="fas fa-caret-down"></i></a>
                     <div class="sub-menu">
                         <ul>
-                            <li><a href="#">KITCHEN & BATH </a></li>
+                            <li><a href="product-list.php">KITCHEN & BATH </a></li>
                             <li><a href="#">GENERAL PLUMBING PRODUCTS</a></li>
                             <li><a href="#">PUMPS & WELL ACCESSORIES</a></li>
                             <li><a href="#">TOOLS</a></li>

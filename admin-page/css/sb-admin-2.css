@@ -165,7 +165,7 @@ a {
 }
 
 a:hover {
-  color: #224abe;
+  color: #162653;
   text-decoration: underline;
 }
 
@@ -1528,6 +1528,7 @@ pre code {
 }
 
 .table thead th {
+  
   vertical-align: bottom;
   border-bottom: 2px solid #e3e6f0;
 }
@@ -1538,6 +1539,7 @@ pre code {
 
 .table-sm th,
 .table-sm td {
+  padding: 0px 60px;
   padding: 0.3rem;
 }
 

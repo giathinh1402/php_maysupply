@@ -18,7 +18,7 @@
 
     <div class="text-btn">
         <p>That’s what you had in mind.</p>
-        <button><p>Get a free Quote</p></button>
+        <a href="#" class="button hero-button">Get a Free Quote</a>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

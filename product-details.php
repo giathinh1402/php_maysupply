@@ -84,9 +84,9 @@
                 </div>
             </div>
             <div class="tablink">
-                <ul class="tab-list">
-                    <li><a href="#tab-description" onclick="openPage('FEATURES')" id="defaultOpen">FEATURES</a></li>
-                    <li><a href="#tab-specifications" onclick="openPage('Specifications&Support')">Specifications & Support</a></li>
+                <ul>
+                    <li><a class= "tablinks" href="#tab-description" onclick="openPage(event, 'FEATURES')" id="defaultOpen">FEATURES</a></li>
+                    <li><a class= "tablinks" href="#tab-specifications" onclick="openPage(event, 'Specifications&Support')" >Specifications & Support</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -148,7 +148,7 @@
     <!-- <script type="text/javascript" src="js/style.js"></script> -->
 
     <script>
-        openPage(pageName);
+        openPage(evt, pageName);
     </script>
 
     <script type="text/javascript">

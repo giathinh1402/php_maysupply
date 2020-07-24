@@ -1,10 +1,15 @@
-
+<?php
+        $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
+        $query = " SELECT * FROM categories LIMIT 4";
+        $query_run = mysqli_query($conn, $query);
+?>
 <div class="column-4">
     <div class="content">
         <h2 class="section-title">“Great Company, Great People, Great Experience.”</h2>
         <h4 class="section-sub-title">Ken Kraynak</h4>
     </div>
 
+    
 
     <div id="p-float">
         <div class="p-float">

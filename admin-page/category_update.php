@@ -25,16 +25,17 @@ include('include/topbar.php');
                     foreach($query_run as $row)
                     {
                         ?>
-                        <form action="category_code.php" method="POST">
-                            <input type="hidden" name="edit_id_category" value="<?php echo $row['category_id'] ?>" >
+                        <form action="category_code.php" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="edit_id_category" value="<?php echo $row['category_id'] ?>">
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-user" value="<?php echo $row['category_name']?>"
                                     name="edit_category_name" placeholder="Category Name">
                             </div>
                             <div class="form-group">
-                                <input type="text" class="form-control form-control-user" value="<?php echo $row['description']?>"
-                                    name="edit_description" placeholder="Description">
-                            </div>
+                                <input type="file" class="form-control input-file" id="filebutton"
+                                    value="<?php echo $row['category_image']?>" 
+                                    name="edit_image" placeholder="Image">
+                            </div>  
                             <a href="categories.php" class="btn btn-danger"> CANCEL</a>
                             <button class="btn btn-primary" name="updatebtn">Update</button>
                         </form>

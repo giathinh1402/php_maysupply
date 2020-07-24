@@ -1,3 +1,7 @@
+<?php
+    include('admin-page/security.php');
+?>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +11,26 @@
 </head>
 
 <body>
-    <div class="slick-slider single-items">
-        <div class="items">
-            <img src="img/Hero-resize.jpg">
+    <?php
+        $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
+        $query = " SELECT * FROM slides";
+        $query_run = mysqli_query($conn, $query);
+    ?>
+        <div class="slick-slider single-items">
+            <?php
+                if (mysqli_num_rows($query_run) > 0) {
+                    while ($row = mysqli_fetch_assoc($query_run)) {
+                    ?>
+                    <div class="items">
+                        <?php echo '<img src="admin-page/upload/'.$row['slide_name'].'" alt="Image">'?>
+                    </div>
+                    <?php
+                    }  
+                }
+            ?>
         </div>
-        <div class="items">
-            <img src="img/Hero-resize.jpg">
-        </div>
-    </div>
+
+    
 
     <div class="text-btn">
         <p>That’s what you had in mind.</p>

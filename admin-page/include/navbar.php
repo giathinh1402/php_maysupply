@@ -47,9 +47,16 @@
 
      <!-- Nav Item - Add Product -->
      <li class="nav-item">
-        <a class="nav-link" href="products.php">
+        <a class="nav-link" href="product.php">
             <i class="fas fa-paste"></i>
             <span>Add Products</span></a>
+    </li>
+
+    <!-- Nav Item - Add Product -->
+    <li class="nav-item">
+        <a class="nav-link" href="slide.php">
+            <i class="far fa-images"></i>
+            <span>Add Slides</span></a>
     </li>
 
     <!-- Nav Item - Pages Collapse Menu -->

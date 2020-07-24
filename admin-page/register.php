@@ -1,9 +1,9 @@
 <?php
 
-include('security.php');
-include('include/header.php');
-include('include/navbar.php');
-include('include/topbar.php');
+include('./security.php');
+include('./include/header.php');
+include('./include/navbar.php');
+include('./include/topbar.php');
 ?>
 
 <div class="modal-header">

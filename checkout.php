@@ -235,10 +235,12 @@
                                 <td class="product-name">
                                     Heritage Single Control Gooseneck Bar Sink Faucet&nbsp; <strong
                                         class="product-quantity">× 1</strong> </td>
+                                        
                                 <td class="product-total">
                                     <span class="Price-amount amount"><span
                                             class="Price-currencySymbol">$</span>299.00</span> </td>
                             </tr>
+                            
                         </tbody>
                         <tfoot>
                             <tr class="cart-subtotal">
@@ -296,12 +298,12 @@
                         <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
                             name="_wp_http_referer" value="/?wc-ajax=update_order_review">
 
-                        <button type="submit" class="button alt" name="checkout_proceed_to_payPal"
+                        <!-- <button type="submit" class="button alt" name="checkout_proceed_to_payPal"
                             id="proceed_to_payPal" value="Proceed to PayPal" data-value="Proceed to PayPal">Proceed to
-                            PayPal</button>
+                            PayPal</button> -->
 
-                        <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
-                            name="_wp_http_referer" value="/?wc-ajax=update_order_review">
+                        <!-- <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
+                            name="_wp_http_referer" value="/?wc-ajax=update_order_review"> -->
                     </div>
                 </div>
             </div>

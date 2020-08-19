@@ -59,6 +59,13 @@
             <span>Add Slides</span></a>
     </li>
 
+    <!-- Nav Item - Add Post -->
+    <li class="nav-item">
+        <a class="nav-link" href="post.php">
+        <i class="fas fa-file-alt"></i>
+            <span>Add Post</span></a>
+    </li>
+
     <!-- Nav Item - Pages Collapse Menu -->
     <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"

@@ -47,7 +47,7 @@ include('./include/topbar.php');
                                 <th>ID</th>
                                 <th>User Name</th>
                                 <th>Email</th>
-                                <th>Password</th>
+                                <!-- <th>Password</th> -->
                                 <th>Edit</th>
                                 <th>Delete</th>
                             </tr>
@@ -64,7 +64,7 @@ include('./include/topbar.php');
                                             <td><?php  echo $row['id']; ?></td>
                                             <td><?php  echo $row['username']; ?></td>
                                             <td><?php  echo $row['email']; ?></td>
-                                            <td><?php  echo $row['password']; ?></td>
+                                            
                                             <td>
                                                 <form action="edit_register.php" method="post">
                                                     <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">

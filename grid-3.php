@@ -5,60 +5,36 @@
     </div>
 
     <div id="p-float">
+    <?php
+            $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
+            $query = " SELECT * FROM post WHERE category_name = 'Content Update' ";  
+            $query_run = mysqli_query($conn, $query);
+            ?>
+        <?php
+        if (mysqli_num_rows($query_run) > 0) {
+            while ($row = mysqli_fetch_assoc($query_run)) {
+        ?>
         <div class="p-float">
             <div class="p-float-in">
-                <img class="p-img" src="img/Kitchen-Bath-Design.jpg" />
+                <?php echo '<img class="p-img" src="admin-page/upload/'.$row['image_name'].'" alt="Image">'?>
                 <div class="p-add">
                     <div class="blog-detail">
-                        <h5 class="blog-title"><a href="/minimize-environmental-footprint-solar-water-heater/"
-                                title="Minimize Your Environmental Footprint With A Solar Water Heater.">Minimize Your
-                                Environmental Footprint With A Solar Water Heater.</a></h5>
+                        <h5 class="blog-title"><a href="#"
+                                title="<?php  echo $row['post_title']; ?>"><?php  echo $row['post_title']; ?></a></h5>
                         <div class="blog-excerpt">
-                            <p><span style="font-weight: 400;">Upgrading to a solar water heater is a perfect option for
-                                    the environmentally and economically conscious homeowner. By using the sun’s energy
-                                    to heat your water, you’re taking advantage of a free and fairly consistent resource
-                                    to fuel your home’s water needs.</span></p>
+                            <p><span style="font-weight: 400;"><?php  echo $row['post_content']; ?> </span></p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="p-float">
-            <div class="p-float-in">
-                <img class="p-img" src="img/Alternate-Heat-Design.jpg" />
-                <div class="p-add">
-                    <div class="blog-detail">
-                        <h5 class="blog-title"><a href="/radiant-heat-keeps-open-concept-homes-comfortably-warm/"
-                                title="Radiant Heat Keeps Open Concept Homes Comfortably Warm.">Radiant Heat Keeps Open
-                                Concept Homes Comfortably Warm.</a></h5>
-                        <div class="blog-excerpt">
-                            <p><span style="font-weight: 400;">Radiant heat</span><span style="font-weight: 400;">
-                                    functions by either hydronics or electricity. Hydronic radiant heating is generated
-                                    by running hot water through plastic tubing, under your flooring. Electric radiant
-                                    uses heating cables to warm the floor above. </span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="p-float">
-            <div class="p-float-in">
-                <img class="p-img" src="img/Plumbing-Solutions-Consulting.jpg" />
-                <div class="p-add">
-                    <div class="blog-detail">
-                        <h5 class="blog-title"><a href="/state-certified-water-testing-keeps-family-safe/"
-                                title="State Certified Water Testing Keeps Your Family Safe.">State Certified Water
-                                Testing Keeps Your Family Safe.</a></h5>
-                        <div class="blog-excerpt">
-                            <p><span style="font-weight: 400;">Water treatment is a necessity for most homeowners and
-                                    business owners in the Shenandoah Valley of Virginia and West Virginia. The rocky
-                                    foundation of our region makes for hard, mineral rich water that can collect on
-                                    dishes, in laundry machines, and damage your skin and hair. </span></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php
+                }
+            } else {
+                echo "No Record Found";
+            }
+        ?>
+        
     </div>
 
     <div class="content2">

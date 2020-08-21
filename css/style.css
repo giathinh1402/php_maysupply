@@ -1039,7 +1039,7 @@ li:hover:after {
 
 .tabcontent-products ul li img {
     width: 100%;
-    height: auto;
+    height: 170px;
     display: block;
     margin: 0 0 1em;
     box-shadow: none;
@@ -1575,8 +1575,9 @@ p select {
 }
 
 .data-form .col-2 {
+    margin: -22px -75px;
     float: right;
-    width: 48%;
+    width: 52%;
 }
 
 .col-2 h3 {
@@ -1683,7 +1684,7 @@ p select {
     box-shadow: none;
 }
 
-.form-row button {
+.form-row input {
     float: right;
     margin: 10px 6px;
 }
@@ -1913,6 +1914,13 @@ ul .paypal::before {
     margin-top: 25px;
 }
 
+.product-details .entry-summary .add-to-card-button input {
+    width: 96px;
+    height: 48px;
+    color: #fff;
+    background-color: #003050;
+}
+
 .product-infor {
     width: 44%;
     margin-top: 159px;
@@ -1983,7 +1991,7 @@ span.price {
 
 .product-infor .input-group .input-number {
     border: none;
-    width: 25%;
+    width: 45%;
 }
 
 .product-infor input {

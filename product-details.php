@@ -1,3 +1,28 @@
+<?php
+    $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
+    $image = [];
+    $product=[];
+    if(isset($_GET["action"]))
+    {
+        if($_GET["action"] == "detail")
+        {
+            $id = $_GET["id"];
+            $sql = "SELECT image_name from image where products_id =" . $id . ";";
+            $sql1 = "SELECT products_name, price, description from products where products_id =" . $id . ";";
+            $result = $conn->query($sql)->fetch_all();
+            $result1 = $conn->query($sql1)->fetch_all();
+            for ($i = 0; $i < count($result); $i++) {
+                array_push($image, $result[$i][0]);
+            }
+            for ($i = 0; $i < count($result1); $i++) {
+                array_push($product, $result1[$i][0]);
+                array_push($product, $result1[$i][1]);
+                array_push($product, $result1[$i][2]);
+            }
+        }
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,69 +36,59 @@
 </head>
 
 <body>
-    <?php include 'menu.php';?>
+    <?php include 'menu.php'; ?>
     <div class="product-details-body">
         <div class="product-details">
             <div class="product-gallery">
                 <div class="list-image">
                     <section class="move-top">
                         <ul class="slider-text slider-nav slick-list draggable">
-                            <li><a href="#"><img src="img/image3-120x120.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="img/image4-120x120.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="img/image5-120x120.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="img/image3-120x120.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="img/image4-120x120.jpg" alt=""></a></li>
-                            <li><a href="#"><img src="img/image5-120x120.jpg" alt=""></a></li>
+                            <?php  for ($i = 0; $i < count($image); $i++) {?>
+                            <li onclick="changeValueImage(<?php echo $i?>)"><a href="#"><?php echo '<img src="img/' . $image[$i] . '" alt="Image">' ?></a></a></li>
+                            <?php  }?>
                         </ul>
 
                         <div class="slider-image slider-for">
+                            <?php  for ($i = 0; $i < count($image); $i++) {?>
                             <div class="">
-                                <img src="img/image3.jpg">
+                            <?php echo '<img src="img/' . $image[$i] . '" alt="Image">' ?>
                             </div>
-                            <div>
-                                <img src="img/image4.jpg">
-                            </div>
-                            <div>
-                                <img src="img/image5.jpg">
-                            </div>
-                            <div>
-                                <img src="img/image3.jpg">
-                            </div>
-                            <div>
-                                <img src="img/image4.jpg">
-                            </div>
-                            <div>
-                                <img src="img/image5.jpg">
-                            </div>
+                            <?php  }?>
                         </div>
+
                     </section>
                 </div>
             </div>
             <div class="product-infor">
+            <form class="form-submit" action="cart.php?action=add&id=<?php echo $id ?>" method="post">
                 <div class="summary entry-summary">
-                    <h1 class="product_title entry-title">Heritage Single Control Gooseneck Bar Sink Faucet</h1>
-                    <p class="price"><span class="amount"><span>$</span>299.00</span></p>
+                    <h1 class="product_title entry-title"><?php echo $product[0]?></h1>
+                    <p class="price"><span class="amount"><span>$</span><?php echo $product[1]?></span></p>
                     <div class="description">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
+                        <p><?php echo $product[2]?></p>
                     </div>
                     <div class="input-group product-quantity">
                         <span class="input-group-btn">
-                            <button type="button" class="btn-number" data-type="minus" data-field="quant[574]">
-                                -
-                            </button>
+                            <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">
+                                - </button>
                         </span>
-                        <input name="quant[574]" step="1" min="1" max="99999" value="1"
-                            class="form-control input-number quantity">
+                        <input type="number" name="quantity" value="1" class="form-control input-number quantity">
                         <span class="input-group-btn">
-                            <button type="button" class="btn-number" data-type="plus" data-field="quant[574]">
-                                +
+                            <button type="button" class="btn-number" data-type="plus" onclick="upNumber()"> +
                             </button>
                         </span>
+                        <input type="hidden" name="status" value="detail"> 
+                        <input type="hidden" name="hidden_id" value="<?php echo $id; ?>"> 
+                        <input type="hidden" name="hidden_name" value="<?php echo $product[0]; ?>">
+                        <input type="hidden" name="hidden_image" id= "image" value="0">
+                        <input type="hidden" name="hidden_price" value="<?php echo $product[1]; ?>">
+                            
                     </div>
-                    <div class="add-to-cart-button">
-                        <a href="cart.php">Add to cart</a>
+                    <div class="add-to-card-button">                                          
+                        <input type="submit" name="add_to_cart" value="Add to Cart" >
                     </div>
+            </form>
+            
                     <div class="share-icon">
                         <span>Share</span>
                         <a href=""><i class="fab fa-facebook-square"></i></a>
@@ -82,6 +97,7 @@
                         <a href=""><i class="fab fa-twitter"></i></a>
                     </div>
                 </div>
+            </form>
             </div>
             <div class="tablink">
                 <ul>
@@ -149,6 +165,11 @@
 
     <script>
         openPage(evt, pageName);
+        function changeValueImage(id){
+            var image = document.getElementById('image');
+            image.value=id;
+            console.log(image.value);
+        }
     </script>
 
     <script type="text/javascript">

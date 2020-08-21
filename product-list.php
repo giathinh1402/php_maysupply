@@ -92,45 +92,44 @@ include('admin-page/security.php');
                         if (mysqli_num_rows($query_run) > 0) {
                             while ($row = mysqli_fetch_assoc($query_run)) {
                         ?>
-                        <form class="form-submit" action="cart.php?action=add&id=<?php echo $row["products_id"] ?>" method="post">   
-                                <li class="post" >
-                                    
-                                        <a href="product-details.php"><?php echo '<img src="admin-page/upload/' . $row['image_name'] . '" alt="Image">' ?></a>
-                                        <h2 class=""><?php echo $row['products_name']; ?></h2>
-                                        <span class="price"><span class="price">$</span><?php echo $row['price']; ?></span></span>
-                                        <p class="product-excerpt"><?php echo $row['description']; ?></p>
-                                        <div class="input-group product-quantity">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">
-                                                    - </button>
-                                            </span>
-                                            <input type="number" name="quantity" value="1" class="form-control input-number quantity">
-                                            <span class="input-group-btn">
-                                                <button type="button" class="btn-number" data-type="plus" onclick="upNumber()"> +
-                                                </button>
-                                            </span>
-                                            <input type="hidden" name="hidden_id" value="<?php echo $row["products_id"]; ?>"> 
-                                            <input type="hidden" name="hidden_name" value="<?php echo $row["products_name"]; ?>">
-                                            <input type="hidden" name="hidden_image" value="<?php echo $row["image_name"]; ?>">
-                                            <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
-                                                
-                                        </div>
-                                         
-                                        <div class="add-to-card-button">
-                                            
-                                                                                      
-                                            <input type="submit" name="add_to_cart" value="Add to Cart" ></a>
-                                        </div>
-                                    </form>
-                                    
-                            </a>
+                        <li class="post" >
+                            <form class="form-submit" action="cart.php?action=add&id=<?php echo $row["products_id"] ?>" method="post">   
+                                
+                                <a href="product-details.php?action=detail&id=<?php echo $row['products_id']; ?>" ><?php echo '<img src="admin-page/upload/' . $row['image_name'] . '" alt="Image">' ?></a>
+                                <h2 class=""><?php echo $row['products_name']; ?></h2>
+                                <span class="price"><span class="price">$</span><?php echo $row['price']; ?></span></span>
+                                <p class="product-excerpt"><?php echo $row['description']; ?></p>
+                                <div class="input-group product-quantity">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">
+                                            - </button>
+                                    </span>
+                                    <input type="number" name="quantity" value="1" class="form-control input-number quantity">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-number" data-type="plus" onclick="upNumber()"> +
+                                        </button>
+                                    </span>
+                                    <input type="hidden" name="status" value="list"> 
+                                    <input type="hidden" name="hidden_id" value="<?php echo $row["products_id"]; ?>"> 
+                                    <input type="hidden" name="hidden_name" value="<?php echo $row["products_name"]; ?>">
+                                    <input type="hidden" name="hidden_image" value="<?php echo $row["image_name"]; ?>">
+                                    <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
+                                        
+                                </div>
+                                 
+                                <div class="add-to-card-button">
+                                    <input type="submit" name="add_to_cart" value="Add to Cart" >
+                                </div>
+                            </form>
+                      </li>  
+                            
                             <?php
                             }
                         } else {
                             echo "No Record Found";
                         }
                             ?>
-                        </li>
+                        
 
                     </ul>
                 </div>
@@ -139,51 +138,50 @@ include('admin-page/security.php');
                         <div class="message"></div>
                         <?php
                             $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
-                            $query = " SELECT * FROM products WHERE category_name = 'Heating &Cooling'";
+                            $query = " SELECT * FROM products WHERE category_name = 'General Plumbing Products'";
                             $query_run = mysqli_query($conn, $query);
                         ?>
                         <?php
                             if (mysqli_num_rows($query_run) > 0) {
                                 while ($row = mysqli_fetch_assoc($query_run)) {
                         ?>
-                        <form class="form-submit" action="cart.php?action=add&id=<?php echo $row["products_id"] ?>" method="post">   
-                                <li class="post" >
+                        <li class="post" >
+                            <form class="form-submit" action="cart.php?action=add&id=<?php echo $row["products_id"] ?>" method="post">   
+                                
+                                <a href="product-details.php?action=detail&id=<?php echo $row['products_id']; ?>" ><?php echo '<img src="admin-page/upload/' . $row['image_name'] . '" alt="Image">' ?></a>
+                                <h2 class=""><?php echo $row['products_name']; ?></h2>
+                                <span class="price"><span class="price">$</span><?php echo $row['price']; ?></span></span>
+                                <p class="product-excerpt"><?php echo $row['description']; ?></p>
+                                <div class="input-group product-quantity">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">
+                                            - </button>
+                                    </span>
+                                    <input type="number" name="quantity" value="1" class="form-control input-number quantity">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn-number" data-type="plus" onclick="upNumber()"> +
+                                        </button>
+                                    </span>
+                                    <input type="hidden" name="hidden_id" value="<?php echo $row["products_id"]; ?>"> 
+                                    <input type="hidden" name="hidden_name" value="<?php echo $row["products_name"]; ?>">
+                                    <input type="hidden" name="hidden_image" value="<?php echo $row["image_name"]; ?>">
+                                    <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
+                                        
+                                </div>
+                                 
+                                <div class="add-to-card-button">
                                     
-                                    <a href="product-details.php"><?php echo '<img src="admin-page/upload/' . $row['image_name'] . '" alt="Image">' ?></a>
-                                    <h2 class=""><?php echo $row['products_name']; ?></h2>
-                                    <span class="price"><span class="price">$</span><?php echo $row['price']; ?></span></span>
-                                    <p class="product-excerpt"><?php echo $row['description']; ?></p>
-                                    <div class="input-group product-quantity">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">
-                                                - </button>
-                                        </span>
-                                        <input type="number" name="quantity" value="1" class="form-control input-number quantity">
-                                        <span class="input-group-btn">
-                                            <button type="button" class="btn-number" data-type="plus" onclick="upNumber()"> +
-                                            </button>
-                                        </span>
-                                        <input type="hidden" name="hidden_id" value="<?php echo $row["products_id"]; ?>"> 
-                                        <input type="hidden" name="hidden_name" value="<?php echo $row["products_name"]; ?>">
-                                        <input type="hidden" name="hidden_image" value="<?php echo $row["image_name"]; ?>">
-                                        <input type="hidden" name="hidden_price" value="<?php echo $row["price"]; ?>">
-                                            
-                                    </div>
-                                         
-                                    <div class="add-to-card-button">                              
-                                        <input type="submit" name="add_to_cart" value="Add to Cart" ></a>
-                                    </div>
-                                    </form>
-                                    
-                            </a>
+                                                                              
+                                    <input type="submit" name="add_to_cart" value="Add to Cart" >
+                                </div>
+                            </form>
+                      </li>  
                             <?php
                             }
                         } else {
                             echo "No Record Found";
                         }
                             ?>
-                        </li>
-
                     </ul>
                 </div>
 

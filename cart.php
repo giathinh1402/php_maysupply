@@ -1,18 +1,36 @@
 <?php
 session_start();
 $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
-
+$image = [];
 if(isset($_POST["add_to_cart"]))
 {
+    // $id_pro = $_POST["hidden_id"];
+    // $sql = "SELECT * from products where id =" . $id_pro . ";";
+    //         $result = $conn->query($sql)->fetch_all();
 	if(isset($_SESSION["shopping_cart"]))
 	{
 		$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
 		if(!in_array($_GET["id"], $item_array_id))
 		{
-			$count = count($_SESSION["shopping_cart"]);
+            $id = $_GET["id"];
+            $sql = "SELECT image_name from image where products_id =" . $id . ";";
+            $result = $conn->query($sql)->fetch_all();
+
+            $count = count($_SESSION["shopping_cart"]);
+
+            for ($i = 0; $i < count($result); $i++) {
+                array_push($image, $result[$i][0]);
+            }
+            $iimage=$_POST["hidden_image"];
+            $textimage=$iimage;
+            $status = $_POST["status"];
+            
+            if($status=="detail"){
+                $textimage=$image[intval($iimage)];
+            }
 			$item_array = array(
-				'item_id'			=>	$_GET["id"],
-                'item_image'	    =>	$_POST["hidden_image"],
+                'item_id'			=>	$_GET["id"],
+                'item_image'	    =>	$textimage,
                 'item_name'		    =>	$_POST["hidden_name"],
 				'item_price'		=>	$_POST["hidden_price"],
 				'item_quantity'		=>	$_POST["quantity"]
@@ -71,15 +89,23 @@ if(isset($_GET["action"]))
 	}
 }
 
-if(isset($_GET["action"]))
-{ 
-	if($_GET["action"] == "update_cart")
-	{
-        $total = 0;
-        $total = $total + $values['item_quantity'] *  $values["item_price"];
-    }
-}
+// if(isset($_GET["action"]))
+// { 
+// 	if($_GET["action"] == "update_cart")
+// 	{
+//         $total = 0;
+//         $total = $total + $values['item_quantity'] *  $values["item_price"];
+//     }
+// }
+    if(isset($_POST["update_cart"]))
+    {   
 
+        // $total = 0;
+        // $total = $total + $values['item_quantity'] *  $values["item_price"];
+        // $quantity = $_POST['quantity'];
+        // $price = $_POST['price'];
+        // echo $quantity *$price;
+    }
 
 ?>
 
@@ -95,7 +121,7 @@ if(isset($_GET["action"]))
 </head>
 
 <body>
-    <?php include 'menu.php'; ?>
+    
     <div class="blogs">
         <div class="hero-banner">
             <div class="hero-image-wrap"><img src="img/Hero-1.jpg">
@@ -111,7 +137,7 @@ if(isset($_GET["action"]))
 
         ?>
         <div class="content-cart">
-            <form action="" class="cart-form">
+            <form action="" class="cart-form" method="POST">
                 <table>
                     <thead>
                         <tr>
@@ -133,11 +159,10 @@ if(isset($_GET["action"]))
 					?>
                         <tr>
                             <td class="product-remove"><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>" class="remove">x</a></td>
-                            <td class="product-thumbnail"><a href=""><?php echo '<img src="admin-page/upload/' . $values['item_image'] . '" alt="Image">' ?></a></td>
+                            <td class="product-thumbnail"><a href=""><?php echo '<img src="img/' . $values['item_image'] . '" alt="Image">' ?></a></td>
                             <td class="product-name"><a href=""><?php echo $values["item_name"]; ?></a>
                             </td>
-                            <td class="product-price"><span class="woocommerce-Price-amount amount"><span
-                                        class="woocommerce-Price-currencySymbol">$</span><?php echo $values["item_price"]; ?></span></td>
+                            <td class="product-price"><span class="woocommerce-Price-amount amount">$<?php echo $values["item_price"]; ?></span></td>
                             <td class="product-quantity">
                                 <div class="input-group product-quantity">
                                     <span class="input-group-btn">
@@ -179,61 +204,64 @@ if(isset($_GET["action"]))
                         </tr>
                     </tbody>
                 </table>
-            </form>
 
-                    </tbody>
-                </table>
-            </form>
-            <form action="" class="cart-total">
-                <h2>Cart totals</h2>
-                <table>
-                    <tbody>
-                        <tr class="cart-subtotal">
-                            <th class="subtotal"> Subtotal </th>
-                            <td class="product-price"> <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span><?php echo number_format($total, 2); ?></span> </td>
-                        </tr>
-                        <tr class="cart-form">
-                            <th>Shipping</th>
-                            <td> Flat rate: <span class=""><span class="">$</span><?php echo $flat_rate ?></span>
+                <div class=" cart-total"> 
+                    <h2>Cart totals</h2>
+                    <table>
+                        <tbody>
+                            <tr class="cart-subtotal">
+                                <th class="subtotal"> Subtotal </th>
+                                <td class="product-price"> <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span><?php echo number_format($total, 2); ?></span> </td>
+                            </tr>
+                            <tr class="cart-form">
+                                <th>Shipping</th>
+                                <td> Flat rate: <span class=""><span class="">$</span><?php echo $flat_rate ?></span>
 
-                                <form action="" class="shipping-caculator-form">
-                                    <p> <a href="#" onclick="showform()">Calculate shipping</a>
-                                        <div id="form-content">
-                                            <section class="form">
-                                                <p class="shipping-country">
-                                                    <select name="" id="">
-                                                        <option value="UnitedKingdom(UK)">United Kingdom(UK)</option>
-                                                        <option value="VietNam">Việt Nam</option>
-                                                        <option value="Japan">Japan</option>
-                                                        <option value="Chinese">Chinese</option>
-                                                    </select>
-                                                </p>
-                                                <p>
-                                                    <input type="text" class="input-text" value="" placeholder="County" name="calc_shipping_state" id="calc_shipping_state">
-                                                </p>
-                                                <p><input type="text" class="input-text" value="" placeholder="Town / City" name="calc_shipping_city" id="calc_shipping_city"></p>
-                                                <p><input type="text" class="input-text" value="" placeholder="Postcode" name="calc_shipping_postcode" id="calc_shipping_postcode"></p>
-                                                <p><button type="submit" name="calc_shipping" value="1" class="button">Update totals</button></p>
-                                            </section>
-                                        </div>
-                                </form>
-                            </td>
+                                    <form action="" class="shipping-caculator-form" method="POST">
+                                        <p> <a href="#" onclick="showform()">Calculate shipping</a>
+                                            <div id="form-content">
+                                                <section class="form">
+                                                    <p class="shipping-country">
+                                                        <select name="shipping-country" id="">
+                                                            <option value="15">United Kingdom(UK)</option>
+                                                            <option value="20">Việt Nam</option>
+                                                            <option value="5">Japan</option>
+                                                            <option value="2">Chinese</option>
+                                                        </select>
+                                                    </p>
+                                                    <p>
+                                                        <input type="text" class="input-text" value="" placeholder="County" name="calc_shipping_state" id="calc_shipping_state">
+                                                    </p>
+                                                    <p><input type="text" class="input-text" value="" placeholder="Town / City" name="calc_shipping_city" id="calc_shipping_city"></p>
+                                                    <p><input type="text" class="input-text" value="" placeholder="Postcode" name="calc_shipping_postcode" id="calc_shipping_postcode"></p>
+                                                    <p><button type="submit" name="calc_shipping" value="1" class="button">Update totals</button></p>
+                                                </section>
+                                            </div>
+                                    </form>
+                                </td>
 
-                        </tr>
-                        <tr class="order-total">
-                            <th>Total</th>
-                            <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span><?php echo number_format($subtotal, 2); ?></span></strong>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="wc-proceed-to-checkout">
-                    <a href="checkout.php" class="checkout-button button alt wc-forward">
-                        Proceed to checkout</a>
+                            </tr>
+                            <tr class="order-total">
+                                <th>Total</th>
+                                <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span><?php echo number_format($subtotal, 2); ?></span></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="wc-proceed-to-checkout">                           
+                        <input type="submit" name="checkout" value="Process To" ></input>
+                    </div>
                 </div>
             </form>
+
         </div>
     </div>
+    <?php 
+        if(isset($_POST['checkout'])){
+           echo "yes";
+        }
+    ?>
+
     <?php include 'footer.php'; ?>
     <script>
         showform();

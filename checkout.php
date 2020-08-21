@@ -1,3 +1,24 @@
+<?php
+$conn = mysqli_connect("localhost", "root", "", "php_maysupply");
+    if(isset($_POST['checkout_place_order'])){
+        $first_name = $_POST['billing_first_name'];
+        $last_name = $_POST['billing_last_name'];
+        $company_name = $_POST['billing_company_name'];
+        $orderby = $_POST['orderby'];
+        $street_address = $_POST['billing_street_address']. $_POST['billing_apartment_address'];
+        $town_city = $_POST['billing_town_city'];
+        $post_code = $_POST['billing_postcode'];
+        $phone = $_POST['billing_phone'];
+        $email = $_POST['billing_email'];
+        $payment_info = $_POST['payment_info'];        
+        
+        $sql = "INSERT INTO orders (first_name, last_name, company_name, country, street_address, town_city, post_code, phone, email,  payment_infor) 
+                        VALUES ('$first_name','$last_name','$company_name','$orderby','$street_address','$town_city','$post_code','$phone','$email','$payment_info')";
+        $query_run = mysqli_query($conn, $sql);
+    }else{
+        echo " not add";
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +33,6 @@
 </head>
 
 <body>
-    <?php include 'menu.php';?>
     <div class="blogs">
         <div class="hero-banner">
             <div class="hero-image-wrap"><img src="img/blog-hero.jpg">
@@ -34,7 +54,7 @@
                     coupon</button>
             </div>
         </div>
-        <div class="data-form">
+        <form action="" method="POST" class="data-form">
             <div class="col2-set">
                 <div class="col-1">
                     <div class="billing-fields">
@@ -45,14 +65,14 @@
                                     <label for="bill-first-name">First name </label>
                                     <abbr class="required" title="required">*</abbr>
                                     <input type="text" class="input-text " name="billing_first_name"
-                                        id="billing_first_name" placeholder="" value="" autocomplete="given-name"
+                                        id="billing_first_name" autocomplete="given-name"
                                         autofocus="autofocus">
                                 </p>
                                 <p class="last-name">
                                     <label for="bill-last-name">Last name </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_first_name"
-                                        id="billing_last_name" placeholder="" value="" autocomplete="given-name"
+                                    <input type="text" class="input-text " name="billing_last_name"
+                                        id="billing_last_name" autocomplete="given-name"
                                         autofocus="autofocus">
                                 </p>
                             </div>
@@ -82,7 +102,7 @@
                                     onblur="this.placeholder='House number and street name'">
                             </p>
                             <p class="long-info long-info-padding">
-                                <input type="text" class="input-text " name="billing_street_address"
+                                <input type="text" class="input-text " name="billing_apartment_address"
                                     id="billing_street_address" placeholder="Apartment, suite, unit etc. (optional)"
                                     value="" autocomplete="given-name" autofocus="autofocus"
                                     onfocus="this.placeholder=''"
@@ -92,12 +112,6 @@
                                 <label for="bill-town-city">Town / City </label>
                                 <abbr class="required" title="required">*</abbr>
                                 <input type="text" class="input-text " name="billing_town_city" id="billing_town_city"
-                                    placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
-                            </p>
-                            <p class="long-info">
-                                <label for="bill-county">County </label>
-                                <abbr class="required" title="required">*</abbr>
-                                <input type="text" class="input-text " name="billing_county" id="billing_county"
                                     placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
                             </p>
                             <p class="long-info">
@@ -269,13 +283,12 @@
                 </div>
             </div>
             <div class="payment-padding">
-                <div class="payment">
+                <div class="payment" name="payment_info">
                     <ul>
                         <label>
                             <input type="radio" name="colorRadio" value="cash-on-delivery">Cash on delivery </label>
                         <div class="cash-on-delivery select">
                             Pay with cash upon delivery.
-
                         </div>
                     </ul>
                     <ul>
@@ -291,12 +304,14 @@
                         </div>
 
                     </ul>
-                    <div class="form-row place-order">
-                        <button type="submit" class="button alt" name="checkout_place_order" id="place_order"
-                            value="Place order" data-value="Place order">Place order</button>
+                    
+                </div>
+            </div>
+            <div class="form-row place-order">
+                        <a href=""><input type="submit" class="button alt" name="checkout_place_order" value="Place order"></a>
 
-                        <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
-                            name="_wp_http_referer" value="/?wc-ajax=update_order_review">
+                        <!-- <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
+                            name="_wp_http_referer" value="/?wc-ajax=update_order_review"> -->
 
                         <!-- <button type="submit" class="button alt" name="checkout_proceed_to_payPal"
                             id="proceed_to_payPal" value="Proceed to PayPal" data-value="Proceed to PayPal">Proceed to
@@ -304,11 +319,14 @@
 
                         <!-- <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
                             name="_wp_http_referer" value="/?wc-ajax=update_order_review"> -->
-                    </div>
-                </div>
+
+                            
             </div>
-        </div>
+        </form>
+        
+        
     </div>
+
     <?php include 'footer.php';?>
 </body>
 

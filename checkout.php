@@ -1,24 +1,49 @@
 <?php
+session_start();
 $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
-    if(isset($_POST['checkout_place_order'])){
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+    if(isset($_GET['checkout'])){
         $first_name = $_POST['billing_first_name'];
         $last_name = $_POST['billing_last_name'];
         $company_name = $_POST['billing_company_name'];
         $orderby = $_POST['orderby'];
-        $street_address = $_POST['billing_street_address']. $_POST['billing_apartment_address'];
+        $street_address = $_POST['billing_street_address']." ".$_POST['billing_apartment_address'];
         $town_city = $_POST['billing_town_city'];
         $post_code = $_POST['billing_postcode'];
         $phone = $_POST['billing_phone'];
         $email = $_POST['billing_email'];
-        $payment_info = $_POST['payment_info'];        
-        
-        $sql = "INSERT INTO orders (first_name, last_name, company_name, country, street_address, town_city, post_code, phone, email,  payment_infor) 
-                        VALUES ('$first_name','$last_name','$company_name','$orderby','$street_address','$town_city','$post_code','$phone','$email','$payment_info')";
-        $query_run = mysqli_query($conn, $sql);
-    }else{
-        echo " not add";
+        $payment_info = $_POST['colorRadio'];
+        $priceShip = 199;
+        $listProduct = json_encode($_SESSION['shopping_cart']);
+
+
+        // echo $first_name ." **** ". $last_name. " **** ".$company_name." **** ".$orderby." **** ".$street_address
+        // ." ********* ".$town_city. " *** ". $post_code. " ******* ".$phone. " ******* ".$email. " ***** ".$payment_info;
+        //echo ("<script> alert('".$listProduct."');</script>");
+
+    echo ("<script> alert('hello ... ".$listProduct."');</script>");
+        $sql = "INSERT INTO orders (orders_id,first_name, last_name, company_name, country, street_address, town_city, post_code, phone, email, payment_infor, listProduct, priceShip) 
+                VALUES ('','$first_name','$last_name','$company_name','$orderby','$street_address','$town_city','$post_code','$phone','$email','$payment_info','$listProduct ','$priceShip')";
+        unset($_SESSION['shopping_cart']);
+        if(mysqli_query($conn, $sql)){
+            header('Location: home.php?order');
+        }else{
+            echo ('<script> alert("Lỗi; '.mysqli_error($conn).'"); </script>');
+        }
     }
+
+    // if(isset($_GET['checkout'])){
+    //     $listProduct = json_encode($_SESSION['shopping_cart']);
+    //     echo ("<script> alert('".$listProduct."');</script>");
+    //     //echo ('<script> alert("Hello test");</script>');
+    // }
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +58,7 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
 </head>
 
 <body>
+<?php include 'menu.php'; ?>
     <div class="blogs">
         <div class="hero-banner">
             <div class="hero-image-wrap"><img src="img/blog-hero.jpg">
@@ -54,7 +80,8 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                     coupon</button>
             </div>
         </div>
-        <form action="" method="POST" class="data-form">
+
+        <form action="checkout.php?checkout" method="POST" class="data-form">
             <div class="col2-set">
                 <div class="col-1">
                     <div class="billing-fields">
@@ -91,8 +118,6 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                                     <option value="Japan">Japan</option>
                                     <option value="Chinese">Chinese</option>
                                 </select>
-                                <input type="hidden" name="paged" value="1">
-                                </form>
                             </p>
                             <p class="long-info long-info-padding">
                                 <label for="bill-street-address">Street address</label>
@@ -103,7 +128,7 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                             </p>
                             <p class="long-info long-info-padding">
                                 <input type="text" class="input-text " name="billing_apartment_address"
-                                    id="billing_street_address" placeholder="Apartment, suite, unit etc. (optional)"
+                                    id="billing_apartment_address" placeholder="Apartment, suite, unit etc. (optional)"
                                     value="" autocomplete="given-name" autofocus="autofocus"
                                     onfocus="this.placeholder=''"
                                     onblur="this.placeholder='Apartment, suite, unit etc. (optional)'">
@@ -151,40 +176,39 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                                     <p class="shipping-first-name">
                                         <label for="shipping-first-name">First name</label>
                                         <abbr class="required" title="required">*</abbr>
-                                        <input type="text" class="input-text " name="shipping_first_name"
-                                            id="shipping_first_name" placeholder="" value="" autocomplete="given-name"
+                                        <input type="text" class="input-text" name="shipping_first_name_different"
+                                            id="shipping_first_name_different" placeholder="" value="" autocomplete="given-name"
                                             autofocus="autofocus">
                                     </p>
                                     <p class="shipping-last-name">
                                         <label for="shipping-last-name">Last name </label>
                                         <abbr class="required" title="required">*</abbr>
-                                        <input type="text" class="input-text " name="shipping_first_name"
-                                            id="shipping_last_name" placeholder="" value="" autocomplete="given-name"
+                                        <input type="text" class="input-text " name="shipping_last_name_different"
+                                            id="shipping_last_name_different" placeholder="" value="" autocomplete="given-name"
                                             autofocus="autofocus">
                                     </p>
                                 </div>
                                 <p class="long-info">
                                     <label for="bill-company-name">Country </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <select name="orderby" class="orderby">
+                                    <select name="orderby_different" class="orderby">
                                         <option value="UnitedKingdom(UK)">United Kingdom(UK)</option>
                                         <option value="VietNam">Việt Nam</option>
                                         <option value="Japan">Japan</option>
                                         <option value="Chinese">Chinese</option>
                                     </select>
                                     <input type="hidden" name="paged" value="1">
-                                    </form>
                                 </p>
                                 <p class="long-info long-info-padding">
                                     <label for="bill-street-address">Street address</label>
-                                    <input type="text" class="shipping-input-text " name="billing_street_address"
-                                        id="billing_street_address" placeholder="House number and street name" value=""
+                                    <input type="text" class="shipping-input-text " name="billing_street_address_different"
+                                        id="billing_street_address_different" placeholder="House number and street name" value=""
                                         autocomplete="given-name" autofocus="autofocus" onfocus="this.placeholder=''"
                                         onblur="this.placeholder='House number and street name'">
                                 </p>
                                 <p class="long-info long-info-padding">
-                                    <input type="text" class="input-text " name="billing_street_address"
-                                        id="billing_street_address" placeholder="Apartment, suite, unit etc. (optional)"
+                                    <input type="text" class="input-text " name="billing_apartment_address_different"
+                                        id="billing_apartment_address_different" placeholder="Apartment, suite, unit etc. (optional)"
                                         value="" autocomplete="given-name" autofocus="autofocus"
                                         onfocus="this.placeholder=''"
                                         onblur="this.placeholder='Apartment, suite, unit etc. (optional)'">
@@ -192,32 +216,32 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                                 <p class="long-info">
                                     <label for="bill-town-city">Town / City </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_town_city"
-                                        id="billing_town_city" placeholder="" value="" autocomplete="given-name"
+                                    <input type="text" class="input-text " name="billing_town_city_different"
+                                        id="billing_town_city_different" placeholder="" value="" autocomplete="given-name"
                                         autofocus="autofocus">
                                 </p>
                                 <p class="long-info">
                                     <label for="bill-county">County </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_county" id="billing_county"
+                                    <input type="text" class="input-text " name="billing_county_different" id="billing_county_different"
                                         placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
                                 </p>
                                 <p class="long-info">
                                     <label for="bill-postcode">Postcode</label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_postcode" id="billing_postcode"
+                                    <input type="text" class="input-text " name="billing_postcode_different" id="billing_postcode_different"
                                         placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
                                 </p>
                                 <p class="long-info">
                                     <label for="bill-phone ">Phone </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_phone" id="billing_phone "
+                                    <input type="text" class="input-text " name="billing_phone_different" id="billing_phone_different"
                                         placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
                                 </p>
                                 <p class="long-info">
                                     <label for="bill-email">Email address </label>
                                     <abbr class="required" title="required">*</abbr>
-                                    <input type="text" class="input-text " name="billing_email" id="billing_email"
+                                    <input type="text" class="input-text " name="billing_email_different" id="billing_email_different"
                                         placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
                                 </p>
 
@@ -245,28 +269,39 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                             </tr>
                         </thead>
                         <tbody>
+                            <?php 
+                            $total = 0;
+                            foreach($_SESSION["shopping_cart"] as $keys => $values)
+                                {
+                            ?>
                             <tr class="cart_item">
                                 <td class="product-name">
-                                    Heritage Single Control Gooseneck Bar Sink Faucet&nbsp; <strong
-                                        class="product-quantity">× 1</strong> </td>
+                                <?php echo $values["item_name"]; ?>&nbsp; <strong
+                                        class="product-quantity">× <?php echo $values["item_quantity"]; ?></strong> </td>
                                         
                                 <td class="product-total">
                                     <span class="Price-amount amount"><span
-                                            class="Price-currencySymbol">$</span>299.00</span> </td>
+                                            class="Price-currencySymbol">$</span><?php echo number_format($values["item_quantity"] * $values["item_price"], 2);?></span> </td>
                             </tr>
+                            <?php 
+                                $total += ((int)$values["item_quantity"] * (int)$values["item_price"]);
+                                }
+                                $flat_rate = 199.00;
+                                $subtotal = $total + $flat_rate;
+                            ?>
                             
                         </tbody>
                         <tfoot>
                             <tr class="cart-subtotal">
                                 <th>Subtotal</th>
                                 <td><span class="Price-amount amount"><span
-                                            class="Price-currencySymbol">$</span>299.00</span></td>
+                                            class="Price-currencySymbol">$</span><?php echo number_format($total, 2); ?></span></td>
                             </tr>
                             <tr class="shipping">
                                 <th>Shipping</th>
                                 <td data-title="Shipping">
                                     Flat rate: <span class="Price-amount amount"><span
-                                            class="Price-currencySymbol">$</span>30.00</span> <input type="hidden"
+                                            class="Price-currencySymbol">$</span><?php echo number_format($flat_rate, 2); ?></span> <input type="hidden"
                                         name="shipping_method[0]" data-index="0" id="shipping_method_0"
                                         value="flat_rate:1" class="shipping_method">
                                 </td>
@@ -274,7 +309,7 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                             <tr class="order-total">
                                 <th>Total</th>
                                 <td><strong><span class="Price-amount amount"><span
-                                                class="Price-currencySymbol">$</span>329.00</span></strong>
+                                                class="Price-currencySymbol">$</span><?php echo number_format($subtotal, 2); ?></span></strong>
                                 </td>
                             </tr>
                         </tfoot>
@@ -293,7 +328,7 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                     </ul>
                     <ul>
                         <label>
-                            <input type="radio" name="colorRadio" value="paypal">PayPal
+                            <input type="radio" checked name="colorRadio" value="paypal">PayPal
                             <img src="img/paypal.png" alt=""></label>
                         <a href="">What is Paypal?</a>
                         <div class="paypal select">
@@ -308,7 +343,14 @@ $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
                 </div>
             </div>
             <div class="form-row place-order">
-                        <a href=""><input type="submit" class="button alt" name="checkout_place_order" value="Place order"></a>
+
+
+            <!-- <button type="submit" style="margin: 133px 100px; height: 50px; width: 200px;"> test </button> -->
+
+                <!-- <button type="submit" class="button alt" name="checkout_place_order">Place order test</button> -->
+
+                <!-- <button type="submit" style="margin: 40px 55px; height: 100px; width: 100px;">Checkout</button> -->
+                    <input type="submit" class="button alt" value="Place order">
 
                         <!-- <input type="hidden" id="_wpnonce" name="_wpnonce" value="4bacb6d411"><input type="hidden"
                             name="_wp_http_referer" value="/?wc-ajax=update_order_review"> -->

@@ -51,7 +51,7 @@
                         <div class="slider-image slider-for">
                             <?php  for ($i = 0; $i < count($image); $i++) {?>
                             <div class="">
-                            <?php echo '<img src="img/' . $image[$i] . '" alt="Image">' ?>
+                                <?php echo '<img src="img/' . $image[$i] . '" alt="Image">' ?>
                             </div>
                             <?php  }?>
                         </div>

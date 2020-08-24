@@ -169,9 +169,7 @@ include('admin-page/security.php');
                                         
                                 </div>
                                  
-                                <div class="add-to-card-button">
-                                    
-                                                                              
+                                <div class="add-to-card-button">                        
                                     <input type="submit" name="add_to_cart" value="Add to Cart" >
                                 </div>
                             </form>

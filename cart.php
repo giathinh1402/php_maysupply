@@ -2,110 +2,65 @@
 session_start();
 $conn = mysqli_connect("localhost", "root", "", "php_maysupply");
 $image = [];
-if(isset($_POST["add_to_cart"]))
-{
-    // $id_pro = $_POST["hidden_id"];
-    // $sql = "SELECT * from products where id =" . $id_pro . ";";
-    //         $result = $conn->query($sql)->fetch_all();
-	if(isset($_SESSION["shopping_cart"]))
-	{
-		$item_array_id = array_column($_SESSION["shopping_cart"], "item_id");
-		if(!in_array($_GET["id"], $item_array_id))
-		{
-            $id = $_GET["id"];
-            $sql = "SELECT image_name from image where products_id =" . $id . ";";
-            $result = $conn->query($sql)->fetch_all();
 
-            $count = count($_SESSION["shopping_cart"]);
+if (isset($_POST["add_to_cart"])) {
+    $id = (int)$_GET['id'];
+    if (isset($_SESSION['shopping_cart'])) {
+        $cart = $_SESSION['shopping_cart'];
+        $already = true;
 
-            for ($i = 0; $i < count($result); $i++) {
-                array_push($image, $result[$i][0]);
+        foreach ($_SESSION["shopping_cart"] as $keys => $values) {
+            if ((int)$values["item_id"] == $id) {
+                $id_cart = $values["item_id"];
+                $already = false;
+                $_SESSION["shopping_cart"][$id_cart]['item_quantity'] = (int)$_POST["quantity"] + (int)$_SESSION["shopping_cart"][$id_cart]['item_quantity'];
+                break;
             }
-            $iimage=$_POST["hidden_image"];
-            $textimage=$iimage;
-            $status = $_POST["status"];
-            
-            if($status=="detail"){
-                $textimage=$image[intval($iimage)];
-            }
-			$item_array = array(
-                'item_id'			=>	$_GET["id"],
-                'item_image'	    =>	$textimage,
-                'item_name'		    =>	$_POST["hidden_name"],
-				'item_price'		=>	$_POST["hidden_price"],
-				'item_quantity'		=>	$_POST["quantity"]
-			);
-			$_SESSION["shopping_cart"][$count] = $item_array;
-		}
-		else
-		{
-            
-            // echo '<script>alert("Item Already Added")</script>';
-            
-            /**
-             * check ton tai cua sp trong cart:
-             * 2 situation:
-             * 
-             *  =>sit1: chua ton tai
-             *  ->add vo luon
-             * 
-             * 
-             * 
-             *  => sit2: da ton tai trong cart
-             *  b1: tim trong sp hien tai trong session;
-             *  b2: temp_quantity = session['sp_hien_tai']->quantity + session['sp_hien_tai_moi']->quantity;
-             *  b3: update lai cart
-             * 
-             * ->ok
-             *  */ 
-		}
-	}
-	else
-	{
-		$item_array = array(
-			'item_id'			=>	$_GET["id"],
-            'item_image'		=>	$_POST["hidden_image"],
-            'item_name'		    =>	$_POST["hidden_name"],
-			'item_price'		=>	$_POST["hidden_price"],
-			'item_quantity'		=>	$_POST["quantity"]
-		);
-		$_SESSION["shopping_cart"][0] = $item_array;
-	}
-}
-
-if(isset($_GET["action"]))
-{
-	if($_GET["action"] == "delete")
-	{
-		foreach($_SESSION["shopping_cart"] as $keys => $values)
-		{
-			if($values["item_id"] == $_GET["id"])
-			{
-				unset($_SESSION["shopping_cart"][$keys]);
-				
-				echo '<script>window.location="cart.php"</script>';
-			}
-		}
-	}
-}
-
-// if(isset($_GET["action"]))
-// { 
-// 	if($_GET["action"] == "update_cart")
-// 	{
-//         $total = 0;
-//         $total = $total + $values['item_quantity'] *  $values["item_price"];
-//     }
-// }
-    if(isset($_POST["update_cart"]))
-    {   
-
-        // $total = 0;
-        // $total = $total + $values['item_quantity'] *  $values["item_price"];
-        // $quantity = $_POST['quantity'];
-        // $price = $_POST['price'];
-        // echo $quantity *$price;
+        }
+        if ($already) {
+            $item_array = array(
+                'item_id'            =>    $_GET["id"],
+                'item_image'        =>    $_POST["hidden_image"],
+                'item_name'            =>    $_POST["hidden_name"],
+                'item_price'        =>    $_POST["hidden_price"],
+                'item_quantity'        =>    $_POST["quantity"]
+            );
+            $_SESSION["shopping_cart"][$id] = $item_array;
+        }
+    } else {
+        $item_array = array(
+            'item_id'            =>    $_GET["id"],
+            'item_image'        =>    $_POST["hidden_image"],
+            'item_name'            =>    $_POST["hidden_name"],
+            'item_price'        =>    $_POST["hidden_price"],
+            'item_quantity'        =>    $_POST["quantity"]
+        );
+        $_SESSION["shopping_cart"][$id] = $item_array;
     }
+}
+
+if (isset($_GET["action"])) {
+    if ($_GET["action"] == "delete") {
+        foreach ($_SESSION["shopping_cart"] as $keys => $values) {
+            if ($values["item_id"] == $_GET["id"]) {
+                unset($_SESSION["shopping_cart"][$keys]);
+
+                echo '<script>window.location="cart.php"</script>';
+            }
+        }
+    }
+}
+
+if (isset($_GET["updateQuantity"])) {
+    foreach ($_SESSION["shopping_cart"] as $keys => $values) {
+        $quantity = $_POST["quantity" . $values['item_id']];
+        //echo ("<script> alert('number: ".$quantity." ,oldNumber: ".$values["item_quantity"]."');</script>");
+        if ((int)$values["item_quantity"] != (int)$quantity) {
+            $id_cart = $values["item_id"];
+            $_SESSION["shopping_cart"][$id_cart]['item_quantity'] = (int)$quantity;
+        }
+    }
+}
 
 ?>
 
@@ -121,7 +76,7 @@ if(isset($_GET["action"]))
 </head>
 
 <body>
-    
+<?php include 'menu.php';?>
     <div class="blogs">
         <div class="hero-banner">
             <div class="hero-image-wrap"><img src="img/Hero-1.jpg">
@@ -132,12 +87,9 @@ if(isset($_GET["action"]))
                 </div>
             </div>
         </div>
-        <?php
-        // var_dump($_SESSION["shopping_cart"]);
-
-        ?>
+        
         <div class="content-cart">
-            <form action="" class="cart-form" method="POST">
+            <form action="cart.php?updateQuantity" class="cart-form" method="POST">
                 <table>
                     <thead>
                         <tr>
@@ -150,62 +102,55 @@ if(isset($_GET["action"]))
                         </tr>
                     </thead>
                     <tbody>
-                    <?php
-					if(!empty($_SESSION["shopping_cart"]))
-					{
-						$total = 0;
-						foreach($_SESSION["shopping_cart"] as $keys => $values)
-						{
-					?>
-                        <tr>
-                            <td class="product-remove"><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>" class="remove">x</a></td>
-                            <td class="product-thumbnail"><a href=""><?php echo '<img src="img/' . $values['item_image'] . '" alt="Image">' ?></a></td>
-                            <td class="product-name"><a href=""><?php echo $values["item_name"]; ?></a>
-                            </td>
-                            <td class="product-price"><span class="woocommerce-Price-amount amount">$<?php echo $values["item_price"]; ?></span></td>
-                            <td class="product-quantity">
-                                <div class="input-group product-quantity">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">-</button>
-                                    </span>
-                                    <input type="number" name="quantity" value="<?php echo $values["item_quantity"]; ?>" class="form-control input-number quantity">
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn-number" onclick="upNumber()">+</button>
-                                    </span>
-                                </div>
-                            </td>
-
-                            <td class="product-subtotal"><span class="woocommerce-Price-amount amount"><span
-                                        class="woocommerce-Price-currencySymbol">$<?php echo number_format($values["item_quantity"] * $values["item_price"], 2);?></span></td>
-                        </tr>
                         <?php
-                            $flat_rate = 199.00;
-                            $total = $total + ($values["item_quantity"] * $values["item_price"]);
-                            $subtotal = $total + $flat_rate;
-                                }
+                        if (!empty($_SESSION["shopping_cart"])) {
+                            $total = 0;
+                            foreach ($_SESSION["shopping_cart"] as $keys => $values) {
                         ?>
-                        <?php
+                                <tr>
+                                    <td class="product-remove"><a href="cart.php?action=delete&id=<?php echo $values["item_id"]; ?>" class="remove">x</a></td>
+                                    <td class="product-thumbnail"><a href=""><?php echo '<img src="img/' . $values['item_image'] . '" alt="Image">' ?></a></td>
+                                    <td class="product-name"><a href=""><?php echo $values["item_name"]; ?></a>
+                                    </td>
+                                    <td class="product-price"><span class="woocommerce-Price-amount amount">$<?php echo $values["item_price"]; ?></span></td>
+                                    <td class="product-quantity">
+                                        <div class="input-group product-quantity">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn-number" data-type="minus" onclick="downNumber()">-</button>
+                                            </span>
+                                            <input type="number" name="quantity<?php echo $values["item_id"] ?>" value="<?php echo $values["item_quantity"]; ?>" class="form-control input-number quantity">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn-number" onclick="upNumber()">+</button>
+                                            </span>
+                                        </div>
+                                    </td>
+
+                                    <td class="product-subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$<?php echo number_format($values["item_quantity"] * $values["item_price"], 2); ?></span></td>
+                                </tr>
+                            <?php
+                                $total = $total + ($values["item_quantity"] * $values["item_price"]);
                             }
-                            echo "Continue to shopping <a href=product-list.php>Shop</a>";
+                            $flat_rate = 199.00;
+                            $subtotal = $total + $flat_rate;
                             ?>
+                        <?php
+                        }
+                        echo "Continue to shopping <a href=product-list.php>Shop</a>";
+                        ?>
                         <tr>
                             <td colspan="6" class="actions">
                                 <div class="coupon">
-                                    <label for="coupon_code">Coupon:</label> <input type="text" name="coupon_code"
-                                        class="input-text" id="coupon_code" value="" placeholder="Coupon code">
-                                    <button type="submit" class="button" name="update_cart" value="Update cart"
-                                        disabled="">Apply coupon</button>
+                                    <label for="coupon_code">Coupon:</label> <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code">
+                                    <button type="submit" class="button" name="update_cart" value="Update cart" disabled="">Apply coupon</button>
                                 </div>
-                                <button id="update-card" type="submit" class="button" name="update_cart"
-                                    value="Update cart" >Update cart</button>
-                                <input type="hidden" id="_wpnonce" name="_wpnonce" value="b33d9820fb"><input
-                                    type="hidden" name="_wp_http_referer" value="/cart/">
+                                <button id="update-card" type="submit" class="button">Update cart</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-
-                <div class=" cart-total"> 
+            </form>
+            <form action="checkout.php" class="shipping-caculator-form" method="POST">
+                <div class=" cart-total">
                     <h2>Cart totals</h2>
                     <table>
                         <tbody>
@@ -216,30 +161,26 @@ if(isset($_GET["action"]))
                             <tr class="cart-form">
                                 <th>Shipping</th>
                                 <td> Flat rate: <span class=""><span class="">$</span><?php echo $flat_rate ?></span>
-
-                                    <form action="" class="shipping-caculator-form" method="POST">
-                                        <p> <a href="#" onclick="showform()">Calculate shipping</a>
-                                            <div id="form-content">
-                                                <section class="form">
-                                                    <p class="shipping-country">
-                                                        <select name="shipping-country" id="">
-                                                            <option value="15">United Kingdom(UK)</option>
-                                                            <option value="20">Việt Nam</option>
-                                                            <option value="5">Japan</option>
-                                                            <option value="2">Chinese</option>
-                                                        </select>
-                                                    </p>
-                                                    <p>
-                                                        <input type="text" class="input-text" value="" placeholder="County" name="calc_shipping_state" id="calc_shipping_state">
-                                                    </p>
-                                                    <p><input type="text" class="input-text" value="" placeholder="Town / City" name="calc_shipping_city" id="calc_shipping_city"></p>
-                                                    <p><input type="text" class="input-text" value="" placeholder="Postcode" name="calc_shipping_postcode" id="calc_shipping_postcode"></p>
-                                                    <p><button type="submit" name="calc_shipping" value="1" class="button">Update totals</button></p>
-                                                </section>
-                                            </div>
-                                    </form>
+                                    <p> <a href="#" onclick="showform()">Calculate shipping</a>
+                                        <div id="form-content">
+                                            <section class="form">
+                                                <p class="shipping-country">
+                                                    <select name="shipping-country" id="">
+                                                        <option value="15">United Kingdom(UK)</option>
+                                                        <option value="20">Việt Nam</option>
+                                                        <option value="5">Japan</option>
+                                                        <option value="2">Chinese</option>
+                                                    </select>
+                                                </p>
+                                                <p>
+                                                    <input type="text" class="input-text" value="" placeholder="County" name="calc_shipping_state" id="calc_shipping_state">
+                                                </p>
+                                                <p><input type="text" class="input-text" value="" placeholder="Town / City" name="calc_shipping_city" id="calc_shipping_city"></p>
+                                                <p><input type="text" class="input-text" value="" placeholder="Postcode" name="calc_shipping_postcode" id="calc_shipping_postcode"></p>
+                                                <p><button type="submit" name="calc_shipping" value="1" class="button">Update totals</button></p>
+                                            </section>
+                                        </div>
                                 </td>
-
                             </tr>
                             <tr class="order-total">
                                 <th>Total</th>
@@ -248,18 +189,17 @@ if(isset($_GET["action"]))
                             </tr>
                         </tbody>
                     </table>
-                    <div class="wc-proceed-to-checkout">                           
-                        <input type="submit" name="checkout" value="Process To" ></input>
+                    <div class="wc-proceed-to-checkout">
+                        <input type="submit" name="" value="Process To Checkout"></input>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
-    <?php 
-        if(isset($_POST['checkout'])){
-           echo "yes";
-        }
+    <?php
+    if (isset($_POST['checkout'])) {
+        echo "yes";
+    }
     ?>
 
     <?php include 'footer.php'; ?>

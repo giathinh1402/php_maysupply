@@ -1252,6 +1252,7 @@ li:hover:after {
 .input-group .input-number {
     border: none;
     width: 40%;
+    text-align: center;
 }
 
 
@@ -1416,6 +1417,13 @@ li:hover:after {
 
 .cart-total .wc-proceed-to-checkout a:link {
     text-decoration: none;
+}
+
+.cart-total .wc-proceed-to-checkout input {
+    color: #fff;
+    background-color: #003050;
+    border: none;
+    font-size: 20px;
 }
 
 .cart-total .wc-proceed-to-checkout:hover {
@@ -1992,6 +2000,7 @@ span.price {
 .product-infor .input-group .input-number {
     border: none;
     width: 45%;
+    text-align: center;
 }
 
 .product-infor input {

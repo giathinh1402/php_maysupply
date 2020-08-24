@@ -1,3 +1,10 @@
+    <?php
+       
+        if(isset($_GET['order'])){
+            
+            echo ('<script> alert("Order Thành Công"); </script>');
+        }
+    ?>
     <div class="container">
         <?php include 'header.php';?>
         <?php include 'grid-8.php';?>
